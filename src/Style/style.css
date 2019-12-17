@@ -1,0 +1,71 @@
+/* Variables */
+
+/* Slider */
+$SL_width: 6px;
+$SL_color: #ffffff;
+$SL_border_size: 1px;
+$SL_border_color: rgba(31, 32, 65, 0.25);
+$SL_border_radius: 3px; /* half of width */
+
+/* Thumbler */
+$TH_size: 16px;
+$TH_color: linear-gradient(180deg, #6FCF97 0%, #66D2EA 100%);
+$TH_border_size: 2px;
+$TH_border_color: #ffffff;
+$TH_border_radius: 50%;
+
+/* Connect */
+$CO_width: 6px;
+$CO_color: $TH_color;
+$CO_border_radius: 3px; /* half of width */
+
+/* Tooltip */
+$TO_padding: 2px;
+$TO_color: $TH_color;
+$TO_color_text: #ffffff;
+$TO_font: normal normal 10px/10px Montserrat;
+
+/* Selectors */
+SRS__slider {
+    position: relative;
+    background: $SL_color;
+    border: $SL_border_size solid $SL_border_color;
+    border-radius: $SL_border_radius;
+    box-sizing: border-box;
+
+    &_horizontal {
+        height: $SL_width;
+    }
+
+    &_vertical {
+        width: $SL_width;
+    }
+}
+
+SRS__thumbler {
+    position: absolute;
+    z-index: 10;
+    background: $TH_color;
+    width: $TH_size;
+    height: $TH_size;
+    border: $TH_border_size solid $TH_border_color;
+    border-radius: $TH_border_radius;
+    box-sizing: border-box;
+    cursor: pointer;
+    outline: none;
+}
+
+SRS__connect {
+    position: absolute;
+    z-index: 5;
+    background: $CO_color;
+    border-radius: $CO_border_radius;
+
+    &_horizontal {
+        height: $CO_width;
+    }
+
+    &_vertical {
+        width: $CO_width;
+    }
+}
