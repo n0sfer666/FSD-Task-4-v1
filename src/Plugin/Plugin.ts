@@ -21,9 +21,9 @@ export class SimpleRangeSlider {
         }
 
         // tmp
-        console.log('model config: ' + configuration);
-        console.log('user config: ' + this.user_configuration);
-        console.log('container: ' + this.container);
+        console.log(configuration);
+        console.log(this.user_configuration);
+        console.log(this.container);
     }
 
 }
