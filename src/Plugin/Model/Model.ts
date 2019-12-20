@@ -1,6 +1,8 @@
 export class Model {
 
-    constructor(private readonly configuration: IConfiguration) {
+
+
+    constructor(private configuration: I_Configuration) {
 
         // tmp
         console.log(this.configuration);
