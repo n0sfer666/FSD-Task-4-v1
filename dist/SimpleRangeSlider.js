@@ -96,46 +96,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /************************************************************************/
 /******/ ({
 
-/***/ "./src/Plugin/Model/Calculator/Calculator.ts":
-/*!***************************************************!*\
-  !*** ./src/Plugin/Model/Calculator/Calculator.ts ***!
-  \***************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var Calculator = (function () {
-    function Calculator() {
-    }
-    return Calculator;
-}());
-exports.Calculator = Calculator;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiQ2FsY3VsYXRvci5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIkNhbGN1bGF0b3IudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7QUFBQTtJQUFBO0lBRUEsQ0FBQztJQUFELGlCQUFDO0FBQUQsQ0FBQyxBQUZELElBRUM7QUFGWSxnQ0FBVSJ9
-
-/***/ }),
-
-/***/ "./src/Plugin/Model/Data/Data.ts":
-/*!***************************************!*\
-  !*** ./src/Plugin/Model/Data/Data.ts ***!
-  \***************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var Data = (function () {
-    function Data() {
-    }
-    return Data;
-}());
-exports.Data = Data;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiRGF0YS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIkRhdGEudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7QUFBQTtJQUlJO0lBRUEsQ0FBQztJQUNMLFdBQUM7QUFBRCxDQUFDLEFBUEQsSUFPQztBQVBZLG9CQUFJIn0=
-
-/***/ }),
-
 /***/ "./src/Plugin/Model/Model.ts":
 /*!***********************************!*\
   !*** ./src/Plugin/Model/Model.ts ***!
@@ -146,21 +106,15 @@ exports.Data = Data;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Data_1 = __webpack_require__(/*! ./Data/Data */ "./src/Plugin/Model/Data/Data.ts");
-var Calculator_1 = __webpack_require__(/*! ./Calculator/Calculator */ "./src/Plugin/Model/Calculator/Calculator.ts");
 var Model = (function () {
     function Model(configuration) {
         this.configuration = configuration;
-        this.data = new Data_1.Data();
-        this.calculator = new Calculator_1.Calculator();
         console.log(this.configuration);
-        console.log(this.data);
-        console.log(this.calculator);
     }
     return Model;
 }());
 exports.Model = Model;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiTW9kZWwuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJNb2RlbC50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOztBQUFBLG9DQUFtQztBQUNuQyxzREFBcUQ7QUFDckQ7SUFLSSxlQUFvQixhQUE2QjtRQUE3QixrQkFBYSxHQUFiLGFBQWEsQ0FBZ0I7UUFFN0MsSUFBSSxDQUFDLElBQUksR0FBRyxJQUFJLFdBQUksRUFBRSxDQUFDO1FBQ3ZCLElBQUksQ0FBQyxVQUFVLEdBQUcsSUFBSSx1QkFBVSxFQUFFLENBQUM7UUFFbkMsT0FBTyxDQUFDLEdBQUcsQ0FBQyxJQUFJLENBQUMsYUFBYSxDQUFDLENBQUM7UUFDaEMsT0FBTyxDQUFDLEdBQUcsQ0FBQyxJQUFJLENBQUMsSUFBSSxDQUFDLENBQUM7UUFDdkIsT0FBTyxDQUFDLEdBQUcsQ0FBQyxJQUFJLENBQUMsVUFBVSxDQUFDLENBQUM7SUFDakMsQ0FBQztJQUNMLFlBQUM7QUFBRCxDQUFDLEFBZEQsSUFjQztBQWRZLHNCQUFLIn0=
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiTW9kZWwuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJNb2RlbC50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOztBQUFBO0lBRUksZUFBNkIsYUFBNkI7UUFBN0Isa0JBQWEsR0FBYixhQUFhLENBQWdCO1FBR3RELE9BQU8sQ0FBQyxHQUFHLENBQUMsSUFBSSxDQUFDLGFBQWEsQ0FBQyxDQUFDO0lBQ3BDLENBQUM7SUFDTCxZQUFDO0FBQUQsQ0FBQyxBQVBELElBT0M7QUFQWSxzQkFBSyJ9
 
 /***/ }),
 
