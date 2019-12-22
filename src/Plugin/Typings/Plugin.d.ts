@@ -1,6 +1,6 @@
 interface I_Configuration {
-    readonly orientation: T_Configuration_Orientation; 
-    readonly start: T_Confuguration_Start;
+    readonly orientation: T_Slider_Orientation; 
+    readonly start: T_Slider_Value;
     readonly range: T_Array_with_Couple_of_Numbers;
     readonly step: number;
     readonly connect: boolean;
@@ -8,5 +8,5 @@ interface I_Configuration {
 }
 
 type T_Array_with_Couple_of_Numbers = [number, number];
-type T_Configuration_Orientation = 'horizontal' | 'vertical';
-type T_Confuguration_Start = number | T_Array_with_Couple_of_Numbers;
+type T_Slider_Orientation = 'horizontal' | 'vertical';
+type T_Slider_Value = number | T_Array_with_Couple_of_Numbers;
