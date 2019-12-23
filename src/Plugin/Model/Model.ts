@@ -1,4 +1,4 @@
-export class Model {
+export class Model implements I_Model {
 
     readonly is_single_thumbler: boolean;
     current_value: T_Slider_Value;

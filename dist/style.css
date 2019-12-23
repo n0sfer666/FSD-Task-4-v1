@@ -9,7 +9,7 @@
 
 .SRS__slider_horizontal{
         height:6px;
-        margin:0 calc(16px / 2);
+        margin:15px calc(16px / 2) 0;
     }
 
 .SRS__slider_vertical{

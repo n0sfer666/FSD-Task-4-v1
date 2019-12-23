@@ -35,7 +35,7 @@ $TO_font: normal normal 10px/10px Montserrat;
 
     &_horizontal {
         height: $SL_width;
-        margin: 0 calc($TH_size / 2);
+        margin: 15px calc($TH_size / 2) 0;
     }
 
     &_vertical {
