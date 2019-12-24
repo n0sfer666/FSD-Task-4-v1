@@ -29,6 +29,7 @@ export class View {
             css_class_slider += ' SRS__slider_horizontal';
             css_class_thumbler += ' SRS__thumbler_horizontal';
             css_class_connect += ' SRS__connect_horizontal';
+            css_class_tooltip += ' SRS__tooltip_horizontal';
             css_class_tooltip_bar += ' SRS__tooltip-bar_horizontal';
 
         } else {
@@ -36,6 +37,7 @@ export class View {
             css_class_slider += ' SRS__slider_vertical';
             css_class_thumbler += ' SRS__thumbler_vertical';
             css_class_connect += ' SRS__connect_vertical';
+            css_class_tooltip += ' SRS__tooltip_vertical';
             css_class_tooltip_bar += ' SRS__tooltip-bar_vertical';
             
         }
@@ -51,8 +53,10 @@ export class View {
 
             this.thumbler = document.createElement('div');
             this.thumbler.setAttribute('class', css_class_thumbler);
-            // let thumbler_position: string = 
-            // this.thumbler.setAttribute('style', 'transform: trans')
+            let thumbler_position: string = orientation === 'horizontal'
+                ? 'transform: translate(' + (current_position * 1000) + '%)'
+                : 'transform: translate(0, ' + (current_position * 1000) + '%)';
+            this.thumbler.setAttribute('style', thumbler_position);
 
             this.tooltip = document.createElement('div');
             this.tooltip.setAttribute('class', css_class_tooltip);
@@ -63,8 +67,17 @@ export class View {
         } else {
 
             this.thumbler = [ document.createElement('div'), document.createElement('div') ];
-            this.thumbler.forEach( (element) => {
-                element.setAttribute('class', css_class_thumbler);
+            let thumbler_position: [string, string] = Array.isArray(current_position) 
+                ? orientation === 'horizontal'
+                    ? [ 'transform: translateX(' + (current_position[0] * 1000) + '%)', 
+                        'transform: translateX(' + (current_position[1] * 1000) + '%)' ]
+                    : [ 'transform: translateY(' + (current_position[0] * 1000) + '%)', 
+                        'transform: translateY(' + (current_position[1] * 1000) + '%)' ]
+                : ['', ''];
+            this.thumbler.forEach( (item, index) => {
+                item.setAttribute('class', css_class_thumbler);
+                item.setAttribute('style', thumbler_position[index]);
+
             });
 
             this.tooltip = [ document.createElement('div'), document.createElement('div') ];

@@ -47,8 +47,12 @@ $TO_font: normal normal 10px/10px Montserrat;
 }
 
 .SRS__thumbler {
-    width: 10%;
-    height: 10%;
+    /* иначе при 2х бегунках и вертикальной ориентации, 2ой бегунок будет убегать дальше */
+    position: absolute;
+
+    transform-origin: 0 0;
+    transform-style: flat;
+    will-change: transform;
 
     &:after {
         content: '';
@@ -64,14 +68,26 @@ $TO_font: normal normal 10px/10px Montserrat;
         outline: none;
     }
 
-    &_horizontal:after {
-        top: -$SL_width;
-        left: calc(-$TH_size / 2);
+    &_horizontal {
+
+        width: 10%;
+        height: 0;
+    
+        &:after {
+            top: -$SL_width;
+            left: calc(-$TH_size / 2);
+        }
     }
 
-    &_vertical:after {
-        left: -$SL_width;
-        top: calc(-$TH_size / 2);
+    &_vertical {
+
+        height: 10%;
+        width: 0;
+
+        &:after {
+            left: -$SL_width;
+            top: calc(-$TH_size / 2);
+        }
     }
 }
 
