@@ -34,13 +34,15 @@ $TO_font: normal normal 10px/10px Montserrat;
     box-sizing: border-box;
 
     &_horizontal {
+        width: 100%;
         height: $SL_width;
-        margin: 15px calc($TH_size / 2) 0;
+        /* margin: 15px calc($TH_size / 2) 0; */
     }
 
     &_vertical {
         width: $SL_width;
-        margin: calc($TH_size / 2) 0;
+        height: 100%;
+        /* margin: calc($TH_size / 2) 0; */
     }
 }
 
@@ -55,13 +57,21 @@ $TO_font: normal normal 10px/10px Montserrat;
         background: $TH_color;
         width: $TH_size;
         height: $TH_size;
-        top: -$SL_width;
-        left: calc(-$TH_size / 2);
         border: $TH_border_size solid $TH_border_color;
         border-radius: $TH_border_radius;
         box-sizing: border-box;
         cursor: pointer;
         outline: none;
+    }
+
+    &_horizontal:after {
+        top: -$SL_width;
+        left: calc(-$TH_size / 2);
+    }
+
+    &_vertical:after {
+        left: -$SL_width;
+        top: calc(-$TH_size / 2);
     }
 }
 

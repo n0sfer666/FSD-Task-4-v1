@@ -1,10 +1,12 @@
 import { Model } from './Model/Model';
 import { View } from './View/View';
+import { Controller } from './Controller/Controller';
 
 export class SimpleRangeSlider {
 
     private model: Model;
     private view: View;
+    private controller: Controller;
 
     constructor(private container: JQuery, private user_configuration: I_Configuration) {
 
@@ -30,12 +32,14 @@ export class SimpleRangeSlider {
 
         this.model = new Model(configuration);
         this.view = new View(slider);
+        this.controller = new Controller(this.model, this.view);
+
 
         // tmp
         // console.log(configuration);
         // console.log(this.user_configuration);
-        console.log(this.view);
-        console.log(this.model);
+        // console.log(this.view);
+        console.log(this.controller);
         console.log('');
     }
 

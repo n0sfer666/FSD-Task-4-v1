@@ -1,6 +1,5 @@
 export class View {
 
-    readonly is_single_thumbler?: boolean;
     current_value?: T_Slider_Value;
     current_position?: T_Slider_Value;
 
@@ -17,7 +16,7 @@ export class View {
         console.log(this.container);
     }
 
-    draw_slider(is_single_thumbler: boolean,orientation: T_Slider_Orientation, current_position: T_Slider_Value, current_value?: T_Slider_Value): void {
+    draw_slider(orientation: T_Slider_Orientation, current_position: T_Slider_Value, current_value: T_Slider_Value): void {
         
         let css_class_slider: string = 'SRS__slider';
         let css_class_thumbler: string = 'SRS__thumbler';
@@ -25,14 +24,20 @@ export class View {
         let css_class_tooltip: string = 'SRS__tooltip';
         let css_class_tooltip_bar: string = 'SRS__tooltip-bar';
 
-        if(orientation === 'horizontal') {
+        if( orientation === 'horizontal' ) {
+
             css_class_slider += ' SRS__slider_horizontal';
+            css_class_thumbler += ' SRS__thumbler_horizontal';
             css_class_connect += ' SRS__connect_horizontal';
             css_class_tooltip_bar += ' SRS__tooltip-bar_horizontal';
+
         } else {
+            
             css_class_slider += ' SRS__slider_vertical';
+            css_class_thumbler += ' SRS__thumbler_vertical';
             css_class_connect += ' SRS__connect_vertical';
             css_class_tooltip_bar += ' SRS__tooltip-bar_vertical';
+            
         }
 
         this.slider = document.createElement('div');
@@ -42,10 +47,12 @@ export class View {
         this.connect = document.createElement('div');
         this.connect.setAttribute('class', css_class_connect);
 
-        if(is_single_thumbler) {
+        if( !Array.isArray(current_value) && !Array.isArray(current_position) ) {
 
             this.thumbler = document.createElement('div');
             this.thumbler.setAttribute('class', css_class_thumbler);
+            // let thumbler_position: string = 
+            // this.thumbler.setAttribute('style', 'transform: trans')
 
             this.tooltip = document.createElement('div');
             this.tooltip.setAttribute('class', css_class_tooltip);
