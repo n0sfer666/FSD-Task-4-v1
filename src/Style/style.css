@@ -5,7 +5,7 @@ $SL_width: 6px;
 $SL_color: #ffffff;
 $SL_border_size: 1px;
 $SL_border_color: rgba(31, 32, 65, 0.25);
-$SL_border_radius: 3px; /* half of width */
+$SL_border_radius: calc($SL_width / 2);
 
 /* Thumbler */
 $TH_size: 16px;
@@ -16,14 +16,17 @@ $TH_border_radius: 50%;
 
 /* Connect */
 $CO_width: 6px;
-$CO_color: $TH_color;
-$CO_border_radius: 3px; /* half of width */
+$CO_color_horizontal: linear-gradient(90deg, #6FCF97 0%, #66D2EA 100%);
+$CO_color_vertical: $TH_color;
+$CO_border_radius: calc($CO_width / 2);
 
 /* Tooltip */
+$TO_margin: 20px;
 $TO_padding: 2px;
+$TO_text_size: 10px;
 $TO_color: $TH_color;
 $TO_color_text: #ffffff;
-$TO_font: normal normal 10px/10px Montserrat;
+$TO_font: normal normal $TO_text_size/$TO_text_size Serif;
 
 /* Selectors */
 .SRS__slider {
@@ -36,22 +39,19 @@ $TO_font: normal normal 10px/10px Montserrat;
     &_horizontal {
         width: 100%;
         height: $SL_width;
-        /* margin: 15px calc($TH_size / 2) 0; */
     }
 
     &_vertical {
         width: $SL_width;
         height: 100%;
-        /* margin: calc($TH_size / 2) 0; */
     }
 }
 
 .SRS__thumbler {
     /* иначе при 2х бегунках и вертикальной ориентации, 2ой бегунок будет убегать дальше */
     position: absolute;
+    z-index: 9;
 
-    transform-origin: 0 0;
-    transform-style: flat;
     will-change: transform;
 
     &:after {
@@ -94,14 +94,59 @@ $TO_font: normal normal 10px/10px Montserrat;
 .SRS__connect {
     position: absolute;
     z-index: 5;
-    background: $CO_color;
-    border-radius: $CO_border_radius;
+    top: -$SL_border_size;
+    left: -$SL_border_size;
+
+    border-radius: $SL_border_radius;
 
     &_horizontal {
+        background: $CO_color_horizontal;
+
         height: $CO_width;
     }
 
-    &_vertical {
+    &_vertical { 
+        background: $CO_color_vertical;
+
         width: $CO_width;
+    }
+}
+
+/* .SRS__tooltip-bar {
+    background: transparent;
+    position: relative;
+
+    &_horizontal {
+        margin-bottom: $TB_margin;
+        width: 100%;
+        height: 15px;
+    }
+
+    &_vertical {
+        margin-left: $TB_margin;
+        height: 100%;
+        width: ;
+    }
+} */
+
+.SRS__tooltip {
+    position: absolute;
+    z-index: 5;
+
+    padding: $TO_padding;
+    background: $TO_color;
+    border-radius: 3px;
+    
+    font: $TO_font;
+    color: $TO_color_text;
+
+    &_horizontal {
+        transform: translateX(-50%);
+        bottom: calc($TO_text_size / 1.5);
+    }
+
+    &_vertical {
+        transform: translateY(-50%);
+        left: $TO_text_size;
     }
 }

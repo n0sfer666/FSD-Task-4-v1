@@ -4,7 +4,7 @@ let config = {
         'postcss-import': {},
         'postcss-simple-vars': {},
         'postcss-nested': {},
-        'postcss-font-magician': {},
+        'postcss-calc': {},
         'autoprefixer': {},
     }
 };

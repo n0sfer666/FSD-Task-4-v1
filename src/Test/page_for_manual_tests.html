@@ -17,11 +17,11 @@
             margin: 0;
         }
         #sliderX {
-            margin: 15px;
+            margin: 30px;
             width: 320px;
         }   
         #sliderY {
-            margin: 15px;
+            margin: 30px;
             height: 320px;
         } 
     </style>
@@ -29,11 +29,13 @@
     <div id="sliderY"></div>
     <script>
         var slider_X = $('#sliderX').SimpleRangeSlider({
+            range: [0, 10000],
+            start: 5000,
         });
         var slider_Y = $('#sliderY').SimpleRangeSlider({
             orientation: 'vertical',
-            range: [-1000, 1000],
-            start: [-867, 315],
+            range: [-10000, 10000],
+            start: [-8000, 8000],
         })
     </script>
 </body>
