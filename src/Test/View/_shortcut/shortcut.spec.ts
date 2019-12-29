@@ -2,7 +2,7 @@ import { Shortcut } from '../../../Plugin/View/Slider/_shortcut/Shortcut';
 
 let shortcut: Shortcut = new Shortcut;
 
-describe('Shortcut', () => {
+describe('View -> Shortcut', () => {
     describe('(F) create_element_with_class', () => {
         let css_classes: T_View_Classes[] = ['slider', 'thumbler', 'connect', 'tooltip'];
         let orientations: T_Slider_Orientation[] = ['horizontal', 'vertical'];
@@ -17,6 +17,5 @@ describe('Shortcut', () => {
                 })
             }
         }
-
     })
 })

@@ -4,7 +4,7 @@ export class Tooltip extends Shortcut {
 
     tooltip?: T_View_Thumbler_or_Tooltip;
 
-    draw_tooltip(is_draw: boolean, is_single?: boolean, orientation?: T_Slider_Orientation, current_value?: T_Slider_Value): HTMLElement | undefined {
+    draw_tooltip(is_draw: boolean, is_single?: boolean, orientation?: T_Slider_Orientation, current_value?: T_Slider_Value): undefined {
         if(!is_draw) {
             return undefined;
         } 
