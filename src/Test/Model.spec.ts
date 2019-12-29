@@ -14,7 +14,7 @@ describe('Model', () => {
 
         let model: Model = new Model(config);
 
-        describe('function: value_to_position(value)', () => {
+        describe('(F) value_to_position(value)', () => {
 
             it('value is negative', () => {
                 let to_expect: number = .25;
