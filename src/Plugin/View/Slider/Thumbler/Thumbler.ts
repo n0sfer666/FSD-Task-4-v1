@@ -5,10 +5,10 @@ export class Thumbler extends Shortcut {
     element?: T_View_Thumbler_or_Tooltip;
     private is_drawn: boolean = false;
 
-    draw_thumbler(orientation: T_Slider_Orientation, current_position: T_Slider_Value, current_value: T_Slider_Value) {
+    draw_thumbler(orientation: T_Slider_Orientation, current_position: T_Slider_Value) {
         if( !this.is_drawn ) {
 
-            this.element = Array.isArray(current_value) && Array.isArray(current_position)
+            this.element = Array.isArray(current_position)
                 ? this.create_tooltip_or_thumbler(true, false, orientation)
                 : this.create_tooltip_or_thumbler(true, true, orientation);
 

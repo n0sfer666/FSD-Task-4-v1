@@ -8,14 +8,15 @@ export class Controller {
     constructor(private model: Model, private view: View) {
 
         if( !this.is_drawn ) {
-            // this.view.draw_slider(
-            //     this.model.orientation,
-            //     this.model.current_position,
-            //     this.model.current_value );
+            this.view.draw( this.model.configuration.connect,
+                            this.model.configuration.tooltip,
+                            this.model.configuration.orientation,
+                            this.model.current_position,
+                            this.model.current_value );
 
             this.is_drawn = true;
         };
-        console.log(this.model);
-        console.log(this.view);
+        // console.log(this.model);
+        // console.log(this.view);
     }
 }

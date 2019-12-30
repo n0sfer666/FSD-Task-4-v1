@@ -1,13 +1,9 @@
 export class Model implements I_Model {
 
-    // readonly is_single_thumbler: boolean;
-    readonly orientation: T_Slider_Orientation;
     current_value: T_Slider_Value;
     current_position: T_Slider_Value;
 
-    constructor(private configuration: I_Configuration) {
-
-        this.orientation = this.configuration.orientation;
+    constructor(public readonly configuration: I_Configuration) {
 
         if(!Array.isArray(this.configuration.start)) {
             // this.is_single_thumbler = true;

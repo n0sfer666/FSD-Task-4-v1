@@ -22,6 +22,8 @@ export class Connect extends Shortcut {
                 : 'height: ' + current_position * 100 + '%;';
 
         this.element.setAttribute('style', style);
+
+        
     }
 
 }

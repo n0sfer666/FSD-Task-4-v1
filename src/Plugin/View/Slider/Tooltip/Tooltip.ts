@@ -5,7 +5,7 @@ export class Tooltip extends Shortcut {
     element?: T_View_Thumbler_or_Tooltip;
     private is_drawn: boolean = false;
 
-    draw_tooltip(is_draw: boolean, orientation?: T_Slider_Orientation, current_value?: T_Slider_Value): undefined {
+    draw_tooltip(is_draw: boolean, orientation?: T_Slider_Orientation, current_value?: T_Slider_Value) {
 
         if(!is_draw || orientation === undefined || current_value === undefined || this.is_drawn) {
             return undefined;
@@ -26,7 +26,7 @@ export class Tooltip extends Shortcut {
                 item.innerText = String( current_value[index] );
             })
         }
-        if( !Array.isArray( this.element ) && !Array.isArray( current_value ) && this.element !== undefined ) {
+        if( !Array.isArray( this.element ) && !Array.isArray( current_value ) && this.element ) {
             this.element.innerHTML = String( current_value );
         }
     }

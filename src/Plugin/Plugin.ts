@@ -35,10 +35,6 @@ export class SimpleRangeSlider {
         this.controller = new Controller(this.model, this.view);
 
 
-        // tmp
-        // console.log(configuration);
-        // console.log(this.user_configuration);
-        // console.log(this.view);
         console.log(this.controller);
         console.log('');
     }
