@@ -15,12 +15,30 @@ export class Tooltip extends Shortcut {
             : orientation === 'horizontal'
                 ? [ this.create_element_with_class('tooltip', 'horizontal'), this.create_element_with_class('tooltip', 'horizontal') ]
                 : [ this.create_element_with_class('tooltip', 'vertical'), this.create_element_with_class('tooltip', 'vertical') ];
-        if( Array.isArray( this.tooltip ) && Array.isArray( current_value ) )  {
-            this.tooltip.forEach( (item, index) => {
-                item.innerText = String(current_value[index]);
-            });
-        } else if( !Array.isArray( this.tooltip ) ) {
-            this.tooltip.innerText = String(current_value);
+        
+        if(current_value !== undefined) {
+            this.set_innerText_tooltip(current_value);
+        }
+
+        // this.set_innerText_tooltip(current_value);
+        
+        // if( Array.isArray( this.tooltip ) && Array.isArray( current_value ) )  {
+        //     this.tooltip.forEach( (item, index) => {
+        //         item.innerText = String(current_value[index]);
+        //     });
+        // } else if( !Array.isArray( this.tooltip ) ) {
+        //     this.tooltip.innerText = String(current_value);
+        // }
+    }
+    
+    set_innerText_tooltip(current_value: T_Slider_Value) {
+        if( Array.isArray( this.tooltip ) && Array.isArray( current_value ) ) {
+            this.tooltip.forEach((item, index) => {
+                item.innerText = String( current_value[index] );
+            })
+        }
+        if( !Array.isArray( this.tooltip ) && !Array.isArray( current_value ) && this.tooltip !== undefined ) {
+            this.tooltip.innerHTML = String( current_value );
         }
     }
 }
