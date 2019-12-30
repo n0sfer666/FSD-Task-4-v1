@@ -3,32 +3,21 @@ import { Shortcut } from "../_shortcut/Shortcut";
 export class Tooltip extends Shortcut {
 
     tooltip?: T_View_Thumbler_or_Tooltip;
+    private is_drawn: boolean = false;
 
-    draw_tooltip(is_draw: boolean, is_single?: boolean, orientation?: T_Slider_Orientation, current_value?: T_Slider_Value): undefined {
-        if(!is_draw) {
+    draw_tooltip(is_draw: boolean, orientation?: T_Slider_Orientation, current_value?: T_Slider_Value): undefined {
+
+        if(!is_draw || orientation === undefined || current_value === undefined || this.is_drawn) {
             return undefined;
         } 
-        this.tooltip = is_single
-            ? orientation === 'horizontal'
-                ? this.create_element_with_class('tooltip', 'horizontal')
-                : this.create_element_with_class('tooltip', 'vertical')
-            : orientation === 'horizontal'
-                ? [ this.create_element_with_class('tooltip', 'horizontal'), this.create_element_with_class('tooltip', 'horizontal') ]
-                : [ this.create_element_with_class('tooltip', 'vertical'), this.create_element_with_class('tooltip', 'vertical') ];
-        
-        if(current_value !== undefined) {
-            this.set_innerText_tooltip(current_value);
-        }
 
-        // this.set_innerText_tooltip(current_value);
+        this.tooltip = Array.isArray( current_value )
+            ? this.create_tooltip_or_thumbler(false, false, orientation)
+            : this.create_tooltip_or_thumbler(false, true, orientation);
         
-        // if( Array.isArray( this.tooltip ) && Array.isArray( current_value ) )  {
-        //     this.tooltip.forEach( (item, index) => {
-        //         item.innerText = String(current_value[index]);
-        //     });
-        // } else if( !Array.isArray( this.tooltip ) ) {
-        //     this.tooltip.innerText = String(current_value);
-        // }
+        this.set_innerText_tooltip(current_value);
+
+        this.is_drawn = true;
     }
     
     set_innerText_tooltip(current_value: T_Slider_Value) {

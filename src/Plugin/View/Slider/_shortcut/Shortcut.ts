@@ -8,4 +8,17 @@ export class Shortcut {
         return element;
     }
 
+    create_tooltip_or_thumbler( is_thumbler: boolean, is_single: boolean, orientation: T_Slider_Orientation ) {
+        let element: T_View_Thumbler_or_Tooltip;
+        element = is_thumbler
+            ? is_single
+                ? this.create_element_with_class('thumbler', orientation)
+                : [ this.create_element_with_class('thumbler', orientation), this.create_element_with_class('thumbler', orientation) ]
+            : is_single
+                ? this.create_element_with_class('tooltip', orientation)
+                : [ this.create_element_with_class('tooltip', orientation), this.create_element_with_class('tooltip', orientation) ]
+
+        return element;
+    }
+
 }
