@@ -20,4 +20,6 @@ export class View {
             this.is_drawn = true;
         }
     }
+
+    // move()
 }

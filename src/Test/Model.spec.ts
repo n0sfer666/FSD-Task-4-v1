@@ -30,6 +30,24 @@ describe('Model', () => {
     
         });
 
+        describe('(F) position_to_value(position', () => {
+            it('position: 0', () => {
+                let to_expect: number = config.range[0];
+                let result: number = model.position_to_value(0);
+                expect(to_expect).toBe(result);
+            });
+            it('position: 0.1', () => {
+                let to_expect: number = -80;
+                let result: number = model.position_to_value(.1);
+                expect(to_expect).toBe(result);
+            });
+            it('position: 1', () => {
+                let to_expect: number = config.range[1];
+                let result: number = model.position_to_value(1);
+                expect(to_expect).toBe(result);
+            });
+        })
+
     });
 
 });

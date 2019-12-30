@@ -26,4 +26,12 @@ export class Model implements I_Model {
 
         return result;
     }
+
+    position_to_value(position: number): number {
+
+        let range: [number, number] = this.configuration.range;
+        let result: number = position * (range[1] - range[0]) + range[0];
+
+        return result;
+    }
 }
