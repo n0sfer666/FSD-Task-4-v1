@@ -22,12 +22,17 @@ export class Tooltip extends Shortcut {
     
     set_innerText_tooltip(current_value: T_Slider_Value) {
         if( Array.isArray( this.element ) && Array.isArray( current_value ) ) {
+            
             this.element.forEach((item, index) => {
+
                 item.innerText = String( current_value[index] );
+
             })
         }
         if( !Array.isArray( this.element ) && !Array.isArray( current_value ) && this.element ) {
+
             this.element.innerHTML = String( current_value );
+
         }
     }
 }

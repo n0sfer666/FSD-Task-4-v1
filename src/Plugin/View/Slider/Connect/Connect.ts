@@ -23,7 +23,6 @@ export class Connect extends Shortcut {
 
         this.element.setAttribute('style', style);
 
-        
     }
 
 }

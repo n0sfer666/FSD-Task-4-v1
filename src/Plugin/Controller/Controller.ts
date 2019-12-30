@@ -16,7 +16,5 @@ export class Controller {
 
             this.is_drawn = true;
         };
-        // console.log(this.model);
-        // console.log(this.view);
     }
 }

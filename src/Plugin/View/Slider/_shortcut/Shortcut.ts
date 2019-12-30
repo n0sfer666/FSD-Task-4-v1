@@ -6,7 +6,7 @@ export class Shortcut {
 
         let element: HTMLElement = document.createElement('div');
         element.setAttribute('class', (css_class_without_orientation + orientation) );
-        
+
         return element;
     }
 

@@ -49,19 +49,22 @@ export class Slider extends Shortcut {
 
                 this.thumbler.element.forEach( ( item, index ) => {
                     if( Array.isArray( this.tooltip.element ) ) {
+
                         item.append(this.tooltip.element[index]);
+                        
                     }
                 })
 
             } else if( !Array.isArray( this.tooltip.element ) ) {
 
                 if( this.thumbler.element && this.tooltip.element ) {
+
                     this.thumbler.element.append(this.tooltip.element);
+
                 }
             }
         }
 
         this.is_drawn = true;
     }
-
 }

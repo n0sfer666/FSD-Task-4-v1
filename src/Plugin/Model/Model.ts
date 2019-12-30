@@ -6,13 +6,15 @@ export class Model implements I_Model {
     constructor(public readonly configuration: I_Configuration) {
 
         if(!Array.isArray(this.configuration.start)) {
-            // this.is_single_thumbler = true;
+
             this.current_value = this.configuration.start;
             this.current_position = this.value_to_position(this.current_value);
+
         } else {
-            // this.is_single_thumbler = false;
+
             this.current_value = this.configuration.start;
-            this.current_position = [this.value_to_position(this.current_value[0]), this.value_to_position(this.current_value[1])];
+            this.current_position = [this.value_to_position(this.current_value[0]),                             this.value_to_position(this.current_value[1])];
+
         }
 
     }
