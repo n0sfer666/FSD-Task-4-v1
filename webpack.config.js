@@ -17,7 +17,7 @@ module.exports = {
     },
 
     mode: mode,
-    devtool: mode === 'development' ? 'inline-source-map' : '',
+    devtool: mode === 'development' ? 'eval' : '',
 
     module: {
         rules: [

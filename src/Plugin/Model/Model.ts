@@ -8,30 +8,40 @@ export class Model implements I_Model {
         if(!Array.isArray(this.configuration.start)) {
 
             this.current_value = this.configuration.start;
-            this.current_position = this.value_to_position(this.current_value);
+            this.current_position = 0;
+            this.value_to_position(this.current_value);
 
         } else {
 
             this.current_value = this.configuration.start;
-            this.current_position = [this.value_to_position(this.current_value[0]),                             this.value_to_position(this.current_value[1])];
+            this.current_position = [0,0];
+            this.value_to_position(this.current_value);   
 
         }
 
+        
     }
 
-    value_to_position(value: number): number {
+
+    value_to_position(value: T_Slider_Value) {
 
         let range: [number, number] = this.configuration.range;
-        let result: number = (value - range[0])/(range[1] - range[0]);
+        let result: T_Slider_Value = Array.isArray(value)
+            ? [ (value[0] - range[0])/(range[1] - range[0]),
+                (value[1] - range[0])/(range[1] - range[0]) ]
+            : (value - range[0])/(range[1] - range[0]);
 
-        return result;
+        this.current_position = result;
     }
 
-    position_to_value(position: number): number {
+    position_to_value(position: T_Slider_Value) {
 
         let range: [number, number] = this.configuration.range;
-        let result: number = position * (range[1] - range[0]) + range[0];
+        let result: T_Slider_Value = Array.isArray(position)
+            ? [ position[0] * (range[1] - range[0]) + range[0], 
+                position[1] * (range[1] - range[0]) + range[0] ] 
+            : position * (range[1] - range[0]) + range[0];
 
-        return result;
+        this.current_value = result;
     }
 }

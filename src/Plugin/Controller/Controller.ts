@@ -8,6 +8,7 @@ export class Controller {
     constructor(private model: Model, private view: View) {
 
         if( !this.is_drawn ) {
+
             this.view.draw( this.model.configuration.connect,
                             this.model.configuration.tooltip,
                             this.model.configuration.orientation,
@@ -16,5 +17,10 @@ export class Controller {
 
             this.is_drawn = true;
         };
+
+        if(this.is_drawn) {
+
+            this.view.move();
+        }
     }
 }

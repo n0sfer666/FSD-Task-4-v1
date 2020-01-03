@@ -21,5 +21,9 @@ export class View {
         }
     }
 
-    // move()
+    move() {
+        if(this.slider) {
+            this.slider.thumbler.move_thumbler(this.container);
+        }
+    }
 }
