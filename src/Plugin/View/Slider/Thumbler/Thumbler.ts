@@ -3,7 +3,6 @@ import { Shortcut } from "../_shortcut/Shortcut";
 export class Thumbler extends Shortcut {
 
     element?: T_View_Thumbler_or_Tooltip;
-    position?: number;
     private orientation?: T_Slider_Orientation;
     private is_drawn: boolean = false;
 
@@ -45,8 +44,7 @@ export class Thumbler extends Shortcut {
         if(this.element) {
 
             if( Array.isArray( this.element ) ) {
-                this.element.forEach( (item) => {
-                    
+                this.element.forEach( (item, index) => {
                     this.on_mouse_down(container, item);
 
                 })
@@ -95,11 +93,14 @@ export class Thumbler extends Shortcut {
                     new_position = event.clientY - shift - container.getBoundingClientRect().top;
                     new_position_in_percent = new_position / container.offsetHeight;
                 }
+
                 if( new_position_in_percent > 1 ) {
                     new_position_in_percent = 1;
                 } else if ( new_position_in_percent < 0 ) {
                     new_position_in_percent = 0;
                 }
+
+                element.dataset['position'] = String(new_position_in_percent);
             }
 
             function on_mouse_up() {
@@ -107,6 +108,7 @@ export class Thumbler extends Shortcut {
                 document.removeEventListener('mouseup', on_mouse_up);
             }
         }
+
     }
 
     
