@@ -108,6 +108,7 @@ return /******/ (function(modules) { // webpackBootstrap
 Object.defineProperty(exports, "__esModule", { value: true });
 var Controller = (function () {
     function Controller(model, view) {
+        var _this = this;
         this.model = model;
         this.view = view;
         this.is_drawn = false;
@@ -118,26 +119,19 @@ var Controller = (function () {
         ;
         if (this.is_drawn) {
             this.view.move();
-            setInterval(this.management, 50);
+            setInterval(function () {
+                if (Array.isArray(_this.model.current_position)
+                    && Array.isArray(_this.view.slider.thumbler.element)) {
+                    _this.model.current_position[0] = Number(_this.view.slider.thumbler.element[0].dataset['position']);
+                    _this.model.current_position[1] = Number(_this.view.slider.thumbler.element[1].dataset['position']);
+                }
+                else if (!Array.isArray(_this.view.slider.thumbler.element)
+                    && _this.view.slider.thumbler.element) {
+                    _this.model.current_position = Number(_this.view.slider.thumbler.element.dataset['position']);
+                }
+            }, 1500);
         }
     }
-    Controller.prototype.management = function () {
-        var _this = this;
-        if (Array.isArray(this.model.current_position)) {
-            this.model.current_position.forEach(function (item, index) {
-                if (Array.isArray(_this.view.slider.thumbler.element)) {
-                    item = Number(_this.view.slider.thumbler.element[index].dataset['position']);
-                }
-            });
-        }
-        else {
-            if (!Array.isArray(this.view.slider.thumbler.element)
-                && this.view.slider.thumbler.element) {
-                this.model.current_position = Number(this.view.slider.thumbler.element.dataset['position']);
-            }
-        }
-        console.log(this.model.current_position);
-    };
     return Controller;
 }());
 exports.Controller = Controller;
@@ -422,6 +416,7 @@ var Thumbler = (function (_super) {
                         'transform: translateY(' + (current_position[1] * 1000) + '%)'];
                 this.element.forEach(function (item, index) {
                     item.setAttribute('style', style_1[index]);
+                    item.dataset['position'] = String(current_position[index]);
                 });
             }
             else if (!Array.isArray(this.element) && !Array.isArray(current_position)) {
@@ -429,6 +424,7 @@ var Thumbler = (function (_super) {
                     ? 'transform: translateX(' + (current_position * 1000) + '%)'
                     : 'transform: translateY(' + (current_position * 1000) + '%)';
                 this.element.setAttribute('style', style);
+                this.element.dataset['position'] = String(current_position);
             }
             this.is_drawn = true;
         }

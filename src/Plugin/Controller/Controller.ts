@@ -21,23 +21,21 @@ export class Controller {
         if(this.is_drawn) {
 
             this.view.move();
-            setInterval(this.management, 50);
-        }
-    }
 
-    management() {
-        if( Array.isArray( this.model.current_position ) ) {
-            this.model.current_position.forEach( ( item, index ) => {
-                if( Array.isArray( this.view.slider.thumbler.element ) ) {
-                    item = Number( this.view.slider.thumbler.element[index].dataset['position'] );
-                }
-            })
-        } else {
-            if( !Array.isArray( this.view.slider.thumbler.element )
-                && this.view.slider.thumbler.element ) {
-                this.model.current_position = Number( this.view.slider.thumbler.element.dataset['position'] );
-            }
+            setInterval(() => {
+                if( Array.isArray( this.model.current_position )
+                    && Array.isArray ( this.view.slider.thumbler.element ) ) {
+                        
+                        this.model.current_position[0] = Number( this.view.slider.thumbler.element[0].dataset['position' ] );
+                        this.model.current_position[1] = Number( this.view.slider.thumbler.element[1].dataset['position' ] );  
+
+                } else if( !Array.isArray( this.view.slider.thumbler.element )
+                            && this.view.slider.thumbler.element ) {
+                                
+                        this.model.current_position = Number( this.view.slider.thumbler.element.dataset['position'] );
+
+                    }
+            }, 1500);
         }
-        console.log(this.model.current_position);   
     }
 }

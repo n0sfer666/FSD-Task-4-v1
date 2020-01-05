@@ -26,6 +26,7 @@ export class Thumbler extends Shortcut {
 
                 this.element.forEach((item, index) => {
                     item.setAttribute('style', style[index]);
+                    item.dataset['position'] = String(current_position[index]);
                 })
             } else if( !Array.isArray( this.element ) && !Array.isArray( current_position ) ) {
 
@@ -34,6 +35,7 @@ export class Thumbler extends Shortcut {
                     : 'transform: translateY(' + (current_position * 1000) + '%)';
 
                 this.element.setAttribute('style', style);
+                this.element.dataset['position'] = String(current_position);
             }
 
             this.is_drawn = true;

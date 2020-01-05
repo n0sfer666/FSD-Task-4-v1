@@ -34,7 +34,6 @@ export class SimpleRangeSlider {
         this.view = new View(slider);
         this.controller = new Controller(this.model, this.view);
 
-
     }
 
 }
