@@ -2,7 +2,7 @@ import { Slider } from './Slider/Slider';
 
 export class View {
 
-    slider?: Slider;
+    slider: Slider;
     is_drawn: boolean = false;
 
     constructor(private container: HTMLElement) {
@@ -22,8 +22,6 @@ export class View {
     }
 
     move() {
-        if(this.slider) {
             this.slider.thumbler.move_thumbler(this.container);
-        }
     }
 }
