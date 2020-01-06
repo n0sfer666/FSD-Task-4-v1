@@ -120,15 +120,17 @@ var Controller = (function () {
         if (this.is_drawn) {
             this.view.move();
             setInterval(function () {
-                if (Array.isArray(_this.model.current_position)
+                if (Array.isArray(_this.model.new_position)
                     && Array.isArray(_this.view.slider.thumbler.element)) {
-                    _this.model.current_position[0] = Number(_this.view.slider.thumbler.element[0].dataset['position']);
-                    _this.model.current_position[1] = Number(_this.view.slider.thumbler.element[1].dataset['position']);
+                    for (var i = 0; i < _this.model.new_position.length; i++) {
+                        _this.model.new_position[i] = Number(_this.view.slider.thumbler.element[i].dataset['position']);
+                    }
                 }
                 else if (!Array.isArray(_this.view.slider.thumbler.element)
                     && _this.view.slider.thumbler.element) {
-                    _this.model.current_position = Number(_this.view.slider.thumbler.element.dataset['position']);
+                    _this.model.new_position = Number(_this.view.slider.thumbler.element.dataset['position']);
                 }
+                _this.model.is_move_thumbler();
             }, 1500);
         }
     }
@@ -154,13 +156,15 @@ var Model = (function () {
         this.configuration = configuration;
         if (!Array.isArray(this.configuration.start)) {
             this.current_value = this.configuration.start;
-            this.current_position = 0;
-            this.value_to_position(this.current_value);
+            this.new_value = this.current_value;
+            this.current_position = this.value_to_position(this.current_value);
+            this.new_position = this.current_position;
         }
         else {
             this.current_value = this.configuration.start;
-            this.current_position = [0, 0];
-            this.value_to_position(this.current_value);
+            this.new_value = this.current_value;
+            this.current_position = this.value_to_position(this.current_value);
+            this.new_position = this.current_position;
         }
     }
     Model.prototype.value_to_position = function (value) {
@@ -169,15 +173,80 @@ var Model = (function () {
             ? [(value[0] - range[0]) / (range[1] - range[0]),
                 (value[1] - range[0]) / (range[1] - range[0])]
             : (value - range[0]) / (range[1] - range[0]);
-        this.current_position = result;
+        return result;
     };
     Model.prototype.position_to_value = function (position) {
         var range = this.configuration.range;
         var result = Array.isArray(position)
-            ? [position[0] * (range[1] - range[0]) + range[0],
-                position[1] * (range[1] - range[0]) + range[0]]
+            ? [(position[0] * (range[1] - range[0])) + range[0],
+                (position[1] * (range[1] - range[0])) + range[0]]
             : position * (range[1] - range[0]) + range[0];
-        this.current_value = result;
+        return result;
+    };
+    Model.prototype.is_move_thumbler = function () {
+        this.new_value = this.position_to_value(this.new_position);
+        var boundary;
+        if (Array.isArray(this.new_value)
+            && Array.isArray(this.current_value)) {
+            var index_of_changed_value = 0;
+            for (var i = 0; i < this.new_value.length; i++) {
+                if (this.new_value[i] !== this.current_value[i]) {
+                    index_of_changed_value = i;
+                }
+            }
+            boundary = this.set_boundary(index_of_changed_value);
+            if (this.new_value[index_of_changed_value] <= boundary[0]) {
+                this.current_value[index_of_changed_value] = boundary[0];
+                this.current_position = this.value_to_position(this.current_value);
+            }
+        }
+        else {
+            boundary = this.set_boundary();
+        }
+    };
+    Model.prototype.set_boundary = function (index_of_changed_value) {
+        var result = this.configuration.range;
+        var step = this.configuration.step;
+        var range = this.configuration.range;
+        if (index_of_changed_value === undefined) {
+            if (!Array.isArray(this.current_value)) {
+                result[0] = this.current_value - step >= range[0]
+                    ? this.current_value - step
+                    : range[0];
+                result[1] = this.current_value + step <= range[1]
+                    ? this.current_value + step
+                    : range[1];
+                return result;
+            }
+            else {
+                return result;
+            }
+        }
+        else {
+            if (Array.isArray(this.current_value)) {
+                if (index_of_changed_value === 0) {
+                    result[0] = this.current_value[0] - step >= range[0]
+                        ? this.current_value[0] - step
+                        : range[0];
+                    result[1] = this.current_value[0] + step <= this.current_value[1]
+                        ? this.current_value[0] + step
+                        : this.current_value[0];
+                    return result;
+                }
+                else {
+                    result[0] = this.current_value[0] - step >= this.current_value[0]
+                        ? this.current_value[0] - step
+                        : this.current_value[0];
+                    result[1] = this.current_value[0] + step <= range[1]
+                        ? this.current_value[0] + step
+                        : range[1];
+                    return result;
+                }
+            }
+            else {
+                return result;
+            }
+        }
     };
     return Model;
 }());
@@ -417,6 +486,9 @@ var Thumbler = (function (_super) {
                 this.element.forEach(function (item, index) {
                     item.setAttribute('style', style_1[index]);
                     item.dataset['position'] = String(current_position[index]);
+                    item.dataset['thumbler'] = index === 0
+                        ? 'min'
+                        : 'max';
                 });
             }
             else if (!Array.isArray(this.element) && !Array.isArray(current_position)) {

@@ -23,18 +23,26 @@ export class Controller {
             this.view.move();
 
             setInterval(() => {
-                if( Array.isArray( this.model.current_position )
-                    && Array.isArray ( this.view.slider.thumbler.element ) ) {
-                        
-                        this.model.current_position[0] = Number( this.view.slider.thumbler.element[0].dataset['position' ] );
-                        this.model.current_position[1] = Number( this.view.slider.thumbler.element[1].dataset['position' ] );  
+                if( Array.isArray( this.model.new_position ) 
+                && Array.isArray( this.view.slider.thumbler.element ) ) {
+
+                    for( let i = 0; i < this.model.new_position.length; i++ ) {
+
+                        this.model.new_position[i] = Number( this.view.slider.thumbler.element[i].dataset['position'] );
+                    }
 
                 } else if( !Array.isArray( this.view.slider.thumbler.element )
                             && this.view.slider.thumbler.element ) {
                                 
-                        this.model.current_position = Number( this.view.slider.thumbler.element.dataset['position'] );
+                        this.model.new_position = Number( this.view.slider.thumbler.element.dataset['position'] );
 
-                    }
+                }
+                
+                this.model.is_move_thumbler();
+                // console.log(this.model.new_position);
+                // console.log(this.model.new_value);
+                // console.log(this.model.current_value);
+                // console.log(this.model.current_position);
             }, 1500);
         }
     }

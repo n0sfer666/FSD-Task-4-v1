@@ -27,6 +27,9 @@ export class Thumbler extends Shortcut {
                 this.element.forEach((item, index) => {
                     item.setAttribute('style', style[index]);
                     item.dataset['position'] = String(current_position[index]);
+                    item.dataset['thumbler'] = index === 0
+                                                ? 'min'
+                                                : 'max'
                 })
             } else if( !Array.isArray( this.element ) && !Array.isArray( current_position ) ) {
 
