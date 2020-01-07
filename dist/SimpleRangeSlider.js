@@ -118,6 +118,18 @@ var Controller = (function () {
         ;
         if (this.is_drawn) {
             this.view.get_new_position_of_thumbler();
+            if (Array.isArray(this.view.slider.thumbler.element)) {
+                this.view.slider.thumbler.element.forEach(function (item) {
+                    item.onmousedown = function () {
+                        console.log('in controller - ok');
+                    };
+                });
+            }
+            else if (this.view.slider.thumbler.element) {
+                this.view.slider.thumbler.element.onmousedown = function () {
+                    console.log('in controller - ok');
+                };
+            }
         }
     }
     return Controller;
@@ -479,7 +491,7 @@ var Thumbler = (function (_super) {
         var _this = this;
         if (this.element) {
             if (Array.isArray(this.element)) {
-                this.element.forEach(function (item, index) {
+                this.element.forEach(function (item) {
                     _this.on_mouse_down(container, item);
                 });
             }
@@ -499,6 +511,7 @@ var Thumbler = (function (_super) {
     };
     Thumbler.prototype.on_mouse_down = function (container, element) {
         var _this = this;
+        console.log('in view - ok');
         var orientation = this.orientation;
         element.onmousedown = function (event) {
             event.preventDefault();

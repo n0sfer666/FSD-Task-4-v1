@@ -27,7 +27,7 @@ export class Thumbler extends Shortcut {
         if(this.element) {
 
             if( Array.isArray( this.element ) ) {
-                this.element.forEach( (item, index) => {
+                this.element.forEach( (item) => {
                     this.on_mouse_down(container, item);
 
                 })
@@ -52,7 +52,7 @@ export class Thumbler extends Shortcut {
     }
 
     on_mouse_down(container: HTMLElement, element: HTMLElement) {
-
+        console.log('in view - ok')
         let orientation: T_Slider_Orientation = this.orientation;
 
         element.onmousedown = (event: MouseEvent) => {
