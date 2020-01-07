@@ -3,49 +3,27 @@ import { Shortcut } from "../_shortcut/Shortcut";
 export class Thumbler extends Shortcut {
 
     element?: T_View_Thumbler_or_Tooltip;
-    private orientation?: T_Slider_Orientation;
+    private orientation: T_Slider_Orientation = 'horizontal';
+    private current_position?: T_Slider_Value;
     private is_drawn: boolean = false;
 
-    draw_thumbler(orientation: T_Slider_Orientation, current_position: T_Slider_Value) {
+    draw_thumbler(orientation: T_Slider_Orientation, position: T_Slider_Value) {
 
         this.orientation = orientation;
 
         if( !this.is_drawn ) {
 
-            this.element = Array.isArray(current_position)
+            this.element = Array.isArray(position)
                 ? this.create_tooltip_or_thumbler(true, false, orientation)
                 : this.create_tooltip_or_thumbler(true, true, orientation);
 
-            if( Array.isArray( this.element ) && Array.isArray( current_position ) ) {
-
-                let style: string[] = orientation === 'horizontal'
-                    ? [ 'transform: translateX(' + (current_position[0] * 1000) + '%)', 
-                        'transform: translateX(' + (current_position[1] * 1000) + '%)' ]
-                    : [ 'transform: translateY(' + (current_position[0] * 1000) + '%)', 
-                        'transform: translateY(' + (current_position[1] * 1000) + '%)' ];
-
-                this.element.forEach((item, index) => {
-                    item.setAttribute('style', style[index]);
-                    item.dataset['position'] = String(current_position[index]);
-                    item.dataset['thumbler'] = index === 0
-                                                ? 'min'
-                                                : 'max'
-                })
-            } else if( !Array.isArray( this.element ) && !Array.isArray( current_position ) ) {
-
-                let style: string = orientation === 'horizontal'
-                    ? 'transform: translateX(' + (current_position * 1000) + '%)'
-                    : 'transform: translateY(' + (current_position * 1000) + '%)';
-
-                this.element.setAttribute('style', style);
-                this.element.dataset['position'] = String(current_position);
-            }
+            this.set_new_position(position);
 
             this.is_drawn = true;
         }
     }
 
-    move_thumbler(container: HTMLElement) {
+    get_new_position(container: HTMLElement) {
         if(this.element) {
 
             if( Array.isArray( this.element ) ) {
@@ -62,6 +40,7 @@ export class Thumbler extends Shortcut {
             }
         }
     }
+
 // Secondary function
     get_shift(element: HTMLElement, event: MouseEvent): number {
 
@@ -74,9 +53,7 @@ export class Thumbler extends Shortcut {
 
     on_mouse_down(container: HTMLElement, element: HTMLElement) {
 
-        let orientation: T_Slider_Orientation = this.orientation
-                ? this.orientation
-                : 'horizontal';
+        let orientation: T_Slider_Orientation = this.orientation;
 
         element.onmousedown = (event: MouseEvent) => {
             event.preventDefault();
@@ -114,7 +91,36 @@ export class Thumbler extends Shortcut {
             }
         }
 
-    }
-
+    }  
     
+    set_new_position(position: T_Slider_Value) {
+
+        if( this.current_position === undefined || this.current_position !== position ) {
+
+            if( Array.isArray( this.element ) && Array.isArray( position ) ) {
+
+                let style: string[] = this.orientation === 'horizontal'
+                    ? [ 'transform: translateX(' + (position[0] * 1000) + '%)', 
+                        'transform: translateX(' + (position[1] * 1000) + '%)' ]
+                    : [ 'transform: translateY(' + (position[0] * 1000) + '%)', 
+                        'transform: translateY(' + (position[1] * 1000) + '%)' ];
+
+                this.element.forEach((item, index) => {
+
+                    item.setAttribute('style', style[index]);
+                    item.dataset['position'] = String(position[index]);
+
+                })
+                
+            } else if( !Array.isArray( this.element ) && !Array.isArray( position ) && this.element ) {
+
+                let style: string = this.orientation === 'horizontal'
+                    ? 'transform: translateX(' + (position * 1000) + '%)'
+                    : 'transform: translateY(' + (position * 1000) + '%)';
+
+                this.element.setAttribute('style', style);
+                this.element.dataset['position'] = String(position);
+            }
+        }
+    }
 }

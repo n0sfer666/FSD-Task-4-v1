@@ -21,7 +21,7 @@ export class View {
         }
     }
 
-    move() {
-            this.slider.thumbler.move_thumbler(this.container);
+    get_new_position_of_thumbler() {
+            this.slider.thumbler.get_new_position(this.container);
     }
 }

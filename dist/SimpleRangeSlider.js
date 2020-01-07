@@ -108,7 +108,6 @@ return /******/ (function(modules) { // webpackBootstrap
 Object.defineProperty(exports, "__esModule", { value: true });
 var Controller = (function () {
     function Controller(model, view) {
-        var _this = this;
         this.model = model;
         this.view = view;
         this.is_drawn = false;
@@ -118,20 +117,7 @@ var Controller = (function () {
         }
         ;
         if (this.is_drawn) {
-            this.view.move();
-            setInterval(function () {
-                if (Array.isArray(_this.model.new_position)
-                    && Array.isArray(_this.view.slider.thumbler.element)) {
-                    for (var i = 0; i < _this.model.new_position.length; i++) {
-                        _this.model.new_position[i] = Number(_this.view.slider.thumbler.element[i].dataset['position']);
-                    }
-                }
-                else if (!Array.isArray(_this.view.slider.thumbler.element)
-                    && _this.view.slider.thumbler.element) {
-                    _this.model.new_position = Number(_this.view.slider.thumbler.element.dataset['position']);
-                }
-                _this.model.is_move_thumbler();
-            }, 1500);
+            this.view.get_new_position_of_thumbler();
         }
     }
     return Controller;
@@ -183,68 +169,67 @@ var Model = (function () {
             : position * (range[1] - range[0]) + range[0];
         return result;
     };
-    Model.prototype.is_move_thumbler = function () {
-        this.new_value = this.position_to_value(this.new_position);
-        var boundary;
-        if (Array.isArray(this.new_value)
-            && Array.isArray(this.current_value)) {
-            var index_of_changed_value = 0;
-            for (var i = 0; i < this.new_value.length; i++) {
-                if (this.new_value[i] !== this.current_value[i]) {
-                    index_of_changed_value = i;
-                }
-            }
-            boundary = this.set_boundary(index_of_changed_value);
-            if (this.new_value[index_of_changed_value] <= boundary[0]) {
-                this.current_value[index_of_changed_value] = boundary[0];
-                this.current_position = this.value_to_position(this.current_value);
-            }
-        }
-        else {
-            boundary = this.set_boundary();
-        }
-    };
-    Model.prototype.set_boundary = function (index_of_changed_value) {
-        var result = this.configuration.range;
+    Model.prototype.get_new_current_value = function (new_value, current_value) {
         var step = this.configuration.step;
         var range = this.configuration.range;
-        if (index_of_changed_value === undefined) {
-            if (!Array.isArray(this.current_value)) {
-                result[0] = this.current_value - step >= range[0]
-                    ? this.current_value - step
-                    : range[0];
-                result[1] = this.current_value + step <= range[1]
-                    ? this.current_value + step
-                    : range[1];
-                return result;
-            }
-            else {
-                return result;
-            }
-        }
-        else {
-            if (Array.isArray(this.current_value)) {
-                if (index_of_changed_value === 0) {
-                    result[0] = this.current_value[0] - step >= range[0]
-                        ? this.current_value[0] - step
-                        : range[0];
-                    result[1] = this.current_value[0] + step <= this.current_value[1]
-                        ? this.current_value[0] + step
-                        : this.current_value[0];
-                    return result;
+        var result_value;
+        if (Array.isArray(new_value) && Array.isArray(current_value)) {
+            result_value = [0, 0];
+            var boundary = [{ min: 0, max: 0 }, { min: 0, max: 0 }];
+            boundary[0].min = current_value[0] - step > range[0]
+                ? current_value[0] - step
+                : range[0];
+            boundary[0].max = current_value[0] + step < current_value[1]
+                ? current_value[0] + step
+                : current_value[0];
+            boundary[1].min = current_value[1] - step > current_value[0]
+                ? current_value[1] - step
+                : current_value[1];
+            boundary[1].max = current_value[1] + step < range[1]
+                ? current_value[1] + step
+                : range[1];
+            for (var i = 0; i < new_value.length; i++) {
+                if (new_value[i] <= boundary[i].min) {
+                    result_value[i] = boundary[i].min;
                 }
                 else {
-                    result[0] = this.current_value[0] - step >= this.current_value[0]
-                        ? this.current_value[0] - step
-                        : this.current_value[0];
-                    result[1] = this.current_value[0] + step <= range[1]
-                        ? this.current_value[0] + step
-                        : range[1];
-                    return result;
+                    result_value[i] = current_value[i];
+                }
+                if (new_value[i] >= boundary[i].max) {
+                    result_value[i] = boundary[i].max;
+                }
+                else {
+                    result_value[i] = current_value[i];
                 }
             }
+            return result_value;
+        }
+        else {
+            result_value = current_value;
+            var boundary = { min: 0, max: 0 };
+            if (!Array.isArray(new_value) && !Array.isArray(current_value)) {
+                boundary.min = current_value - step > range[0]
+                    ? current_value - step
+                    : range[0];
+                boundary.max = current_value + step < range[1]
+                    ? current_value + step
+                    : range[1];
+                if (new_value <= boundary.min) {
+                    result_value = boundary.min;
+                }
+                else {
+                    result_value = current_value;
+                }
+                if (new_value >= boundary.max) {
+                    result_value = boundary.max;
+                }
+                else {
+                    result_value = current_value;
+                }
+                return result_value;
+            }
             else {
-                return result;
+                return result_value;
             }
         }
     };
@@ -336,22 +321,30 @@ var Connect = (function (_super) {
     __extends(Connect, _super);
     function Connect() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.orientation = 'horizontal';
         _this.is_drawn = false;
         return _this;
     }
-    Connect.prototype.draw_connect = function (is_draw, orientation, current_position) {
-        if (!is_draw || this.is_drawn || orientation === undefined || current_position === undefined) {
+    Connect.prototype.draw_connect = function (is_draw, orientation, position) {
+        if (!is_draw || this.is_drawn || orientation === undefined || position === undefined) {
             return undefined;
         }
+        this.orientation = orientation;
         this.element = this.create_element_with_class('connect', orientation);
-        var style = Array.isArray(current_position)
-            ? orientation === 'horizontal'
-                ? 'left: ' + (current_position[0] * 100) + '%; width: ' + ((current_position[1] - current_position[0]) * 100) + '%;'
-                : 'top: ' + (current_position[0] * 100) + '%; height: ' + ((current_position[1] - current_position[0]) * 100) + '%;'
-            : orientation === 'horizontal'
-                ? 'width: ' + current_position * 100 + '%;'
-                : 'height: ' + current_position * 100 + '%;';
-        this.element.setAttribute('style', style);
+        this.set_new_position(position);
+        this.is_drawn = true;
+    };
+    Connect.prototype.set_new_position = function (position) {
+        var style = Array.isArray(position)
+            ? this.orientation === 'horizontal'
+                ? 'left: ' + (position[0] * 100) + '%; width: ' + ((position[1] - position[0]) * 100) + '%;'
+                : 'top: ' + (position[0] * 100) + '%; height: ' + ((position[1] - position[0]) * 100) + '%;'
+            : this.orientation === 'horizontal'
+                ? 'width: ' + position * 100 + '%;'
+                : 'height: ' + position * 100 + '%;';
+        if (this.element) {
+            this.element.setAttribute('style', style);
+        }
     };
     return Connect;
 }(Shortcut_1.Shortcut));
@@ -468,40 +461,21 @@ var Thumbler = (function (_super) {
     __extends(Thumbler, _super);
     function Thumbler() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.orientation = 'horizontal';
         _this.is_drawn = false;
         return _this;
     }
-    Thumbler.prototype.draw_thumbler = function (orientation, current_position) {
+    Thumbler.prototype.draw_thumbler = function (orientation, position) {
         this.orientation = orientation;
         if (!this.is_drawn) {
-            this.element = Array.isArray(current_position)
+            this.element = Array.isArray(position)
                 ? this.create_tooltip_or_thumbler(true, false, orientation)
                 : this.create_tooltip_or_thumbler(true, true, orientation);
-            if (Array.isArray(this.element) && Array.isArray(current_position)) {
-                var style_1 = orientation === 'horizontal'
-                    ? ['transform: translateX(' + (current_position[0] * 1000) + '%)',
-                        'transform: translateX(' + (current_position[1] * 1000) + '%)']
-                    : ['transform: translateY(' + (current_position[0] * 1000) + '%)',
-                        'transform: translateY(' + (current_position[1] * 1000) + '%)'];
-                this.element.forEach(function (item, index) {
-                    item.setAttribute('style', style_1[index]);
-                    item.dataset['position'] = String(current_position[index]);
-                    item.dataset['thumbler'] = index === 0
-                        ? 'min'
-                        : 'max';
-                });
-            }
-            else if (!Array.isArray(this.element) && !Array.isArray(current_position)) {
-                var style = orientation === 'horizontal'
-                    ? 'transform: translateX(' + (current_position * 1000) + '%)'
-                    : 'transform: translateY(' + (current_position * 1000) + '%)';
-                this.element.setAttribute('style', style);
-                this.element.dataset['position'] = String(current_position);
-            }
+            this.set_new_position(position);
             this.is_drawn = true;
         }
     };
-    Thumbler.prototype.move_thumbler = function (container) {
+    Thumbler.prototype.get_new_position = function (container) {
         var _this = this;
         if (this.element) {
             if (Array.isArray(this.element)) {
@@ -525,9 +499,7 @@ var Thumbler = (function (_super) {
     };
     Thumbler.prototype.on_mouse_down = function (container, element) {
         var _this = this;
-        var orientation = this.orientation
-            ? this.orientation
-            : 'horizontal';
+        var orientation = this.orientation;
         element.onmousedown = function (event) {
             event.preventDefault();
             var shift = _this.get_shift(element, event);
@@ -557,6 +529,28 @@ var Thumbler = (function (_super) {
                 document.removeEventListener('mouseup', on_mouse_up);
             }
         };
+    };
+    Thumbler.prototype.set_new_position = function (position) {
+        if (this.current_position === undefined || this.current_position !== position) {
+            if (Array.isArray(this.element) && Array.isArray(position)) {
+                var style_1 = this.orientation === 'horizontal'
+                    ? ['transform: translateX(' + (position[0] * 1000) + '%)',
+                        'transform: translateX(' + (position[1] * 1000) + '%)']
+                    : ['transform: translateY(' + (position[0] * 1000) + '%)',
+                        'transform: translateY(' + (position[1] * 1000) + '%)'];
+                this.element.forEach(function (item, index) {
+                    item.setAttribute('style', style_1[index]);
+                    item.dataset['position'] = String(position[index]);
+                });
+            }
+            else if (!Array.isArray(this.element) && !Array.isArray(position) && this.element) {
+                var style = this.orientation === 'horizontal'
+                    ? 'transform: translateX(' + (position * 1000) + '%)'
+                    : 'transform: translateY(' + (position * 1000) + '%)';
+                this.element.setAttribute('style', style);
+                this.element.dataset['position'] = String(position);
+            }
+        }
     };
     return Thumbler;
 }(Shortcut_1.Shortcut));
@@ -689,8 +683,8 @@ var View = (function () {
             this.is_drawn = true;
         }
     };
-    View.prototype.move = function () {
-        this.slider.thumbler.move_thumbler(this.container);
+    View.prototype.get_new_position_of_thumbler = function () {
+        this.slider.thumbler.get_new_position(this.container);
     };
     return View;
 }());
