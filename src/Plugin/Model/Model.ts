@@ -84,20 +84,22 @@ export class Model implements I_Model {
 
                     result_value[i] = boundary[i].min;
 
-                } else {
+                } else if( new_value[i] < boundary[i].max ) {
 
-                    result_value[i] =  current_value[i];
+                    result_value[i] = current_value[i];
 
-                } if( new_value[i] >= boundary[i].max ) {
+                } 
+                if( new_value[i] >= boundary[i].max ) {
 
                     result_value[i] = boundary[i].max;
 
-                } else {
+                } else if( new_value[i] > boundary[i].min ) {
 
                     result_value[i] =  current_value[i];
                 }
             }
-
+            console.log('res: ' + result_value);
+            console.log(boundary);
             return result_value;
         } else {
 
@@ -114,31 +116,32 @@ export class Model implements I_Model {
                 boundary.max = current_value + step < range[1]
                                 ? current_value + step
                                 : range[1];
-                
+                console.log(new_value);
+                console.log(boundary);
                 if( new_value <= boundary.min ) {
-
+                    
                     result_value = boundary.min;
 
-                } else {
-
+                } else if( new_value < boundary.max ) {
+                    
                     result_value =  current_value;
 
-                } if( new_value >= boundary.max ) {
-
+                } 
+                if( new_value >= boundary.max ) {
+                    
                     result_value = boundary.max;
 
-                } else {
-
+                } else if( new_value > boundary.min ) {
+                    
                     result_value =  current_value;
                 }
-
+                // console.log('res: ' + result_value);
                 return result_value;
 
             } else {
 
                 return result_value;
             }
-
         }
     }
 }

@@ -52,16 +52,16 @@ export class Thumbler extends Shortcut {
     }
 
     on_mouse_down(container: HTMLElement, element: HTMLElement) {
-        console.log('in view - ok')
+        
         let orientation: T_Slider_Orientation = this.orientation;
 
-        element.onmousedown = (event: MouseEvent) => {
+        element.addEventListener('mousedown', (event: MouseEvent) => {
             event.preventDefault();
-
+            
             let shift: number = this.get_shift(element, event);
 
-            document.addEventListener('mousemove', on_mouse_move);
-            document.addEventListener('mouseup', on_mouse_up);
+            document.addEventListener('mousemove', on_mouse_move, false);
+            document.addEventListener('mouseup', on_mouse_up, false);
 
             // 
             function on_mouse_move(event: MouseEvent) {
@@ -89,10 +89,10 @@ export class Thumbler extends Shortcut {
                 document.removeEventListener('mousemove', on_mouse_move);
                 document.removeEventListener('mouseup', on_mouse_up);
             }
-        }
+        }, false)
+        
+    }
 
-    }  
-    
     set_new_position(position: T_Slider_Value) {
 
         if( this.current_position === undefined || this.current_position !== position ) {

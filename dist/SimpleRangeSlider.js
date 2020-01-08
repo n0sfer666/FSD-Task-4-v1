@@ -108,6 +108,7 @@ return /******/ (function(modules) { // webpackBootstrap
 Object.defineProperty(exports, "__esModule", { value: true });
 var Controller = (function () {
     function Controller(model, view) {
+        var _this = this;
         this.model = model;
         this.view = view;
         this.is_drawn = false;
@@ -119,19 +120,51 @@ var Controller = (function () {
         if (this.is_drawn) {
             this.view.get_new_position_of_thumbler();
             if (Array.isArray(this.view.slider.thumbler.element)) {
-                this.view.slider.thumbler.element.forEach(function (item) {
-                    item.onmousedown = function () {
-                        console.log('in controller - ok');
-                    };
+                this.view.slider.thumbler.element.forEach(function (item, index) {
+                    _this.on_mouse_down(_this.model, _this.view.slider, item, index);
                 });
             }
             else if (this.view.slider.thumbler.element) {
-                this.view.slider.thumbler.element.onmousedown = function () {
-                    console.log('in controller - ok');
-                };
+                var item = this.view.slider.thumbler.element;
+                this.on_mouse_down(this.model, this.view.slider, item);
             }
         }
     }
+    Controller.prototype.on_mouse_down = function (model, slider, element, index) {
+        element.addEventListener('mousedown', function (event) {
+            event.preventDefault();
+            document.addEventListener('mousemove', on_mouse_move, false);
+            document.addEventListener('mouseup', on_mouse_up, false);
+            function on_mouse_move() {
+                if (Array.isArray(model.new_position)) {
+                    if (index !== undefined) {
+                        model.new_position[index] = Number(element.dataset['position']);
+                        change_state();
+                    }
+                }
+                else {
+                    model.new_position = Number(element.dataset['position']);
+                    change_state();
+                }
+                function change_state() {
+                    model.new_value = model.position_to_value(model.new_position);
+                    model.current_value = model.get_new_current_value(model.new_value, model.current_value);
+                    model.current_position = model.value_to_position(model.current_value);
+                    slider.thumbler.set_new_position(model.current_position);
+                    if (slider.connect.element) {
+                        slider.connect.set_new_position(model.current_position);
+                    }
+                    if (slider.tooltip.element) {
+                        slider.tooltip.set_innerText_tooltip(model.current_value);
+                    }
+                }
+            }
+            function on_mouse_up() {
+                document.removeEventListener('mousemove', on_mouse_move);
+                document.removeEventListener('mouseup', on_mouse_up);
+            }
+        }, false);
+    };
     return Controller;
 }());
 exports.Controller = Controller;
@@ -204,16 +237,18 @@ var Model = (function () {
                 if (new_value[i] <= boundary[i].min) {
                     result_value[i] = boundary[i].min;
                 }
-                else {
+                else if (new_value[i] < boundary[i].max) {
                     result_value[i] = current_value[i];
                 }
                 if (new_value[i] >= boundary[i].max) {
                     result_value[i] = boundary[i].max;
                 }
-                else {
+                else if (new_value[i] > boundary[i].min) {
                     result_value[i] = current_value[i];
                 }
             }
+            console.log('res: ' + result_value);
+            console.log(boundary);
             return result_value;
         }
         else {
@@ -226,16 +261,18 @@ var Model = (function () {
                 boundary.max = current_value + step < range[1]
                     ? current_value + step
                     : range[1];
+                console.log(new_value);
+                console.log(boundary);
                 if (new_value <= boundary.min) {
                     result_value = boundary.min;
                 }
-                else {
+                else if (new_value < boundary.max) {
                     result_value = current_value;
                 }
                 if (new_value >= boundary.max) {
                     result_value = boundary.max;
                 }
-                else {
+                else if (new_value > boundary.min) {
                     result_value = current_value;
                 }
                 return result_value;
@@ -511,13 +548,12 @@ var Thumbler = (function (_super) {
     };
     Thumbler.prototype.on_mouse_down = function (container, element) {
         var _this = this;
-        console.log('in view - ok');
         var orientation = this.orientation;
-        element.onmousedown = function (event) {
+        element.addEventListener('mousedown', function (event) {
             event.preventDefault();
             var shift = _this.get_shift(element, event);
-            document.addEventListener('mousemove', on_mouse_move);
-            document.addEventListener('mouseup', on_mouse_up);
+            document.addEventListener('mousemove', on_mouse_move, false);
+            document.addEventListener('mouseup', on_mouse_up, false);
             function on_mouse_move(event) {
                 var new_position;
                 var new_position_in_percent;
@@ -541,7 +577,7 @@ var Thumbler = (function (_super) {
                 document.removeEventListener('mousemove', on_mouse_move);
                 document.removeEventListener('mouseup', on_mouse_up);
             }
-        };
+        }, false);
     };
     Thumbler.prototype.set_new_position = function (position) {
         if (this.current_position === undefined || this.current_position !== position) {
